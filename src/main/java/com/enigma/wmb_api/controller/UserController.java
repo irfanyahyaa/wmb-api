@@ -111,4 +111,20 @@ public class UserController {
         return ResponseEntity
                 .ok(commonResponse);
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<CommonResponse<String>>updateMemberUser(
+            @PathVariable(name = "id") String id,
+            @RequestParam(name = "is_member") Boolean isMember
+    ) {
+        userService.updateMemberById(id, isMember);
+
+        CommonResponse<String> commonResponse = CommonResponse.<String>builder()
+                .statuscode(HttpStatus.OK.value())
+                .message("User member updated successfully")
+                .build();
+
+        return ResponseEntity
+                .ok(commonResponse);
+    }
 }

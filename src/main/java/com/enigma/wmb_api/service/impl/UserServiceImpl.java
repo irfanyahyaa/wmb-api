@@ -53,12 +53,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public MUser update(MUser user) {
         getById(user.getId());
+
         return userRepository.saveAndFlush(user);
     }
 
     @Override
-    public void updateMemberById(String id, Boolean member) {
+    public void updateMemberById(String id, Boolean isMember) {
+        getById(id);
 
+        userRepository.updateMember(id, isMember);
     }
 
     @Override

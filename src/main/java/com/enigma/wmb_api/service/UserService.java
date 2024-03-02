@@ -10,6 +10,6 @@ public interface UserService  {
     Page<MUser> getAll(SearchUserRequest request);
     MUser getById(String id);
     MUser update(MUser user);
-    void updateMemberById(String id, Boolean member);
+    void updateMemberById(String id, Boolean isMember);
     String delete(String id);
 }
