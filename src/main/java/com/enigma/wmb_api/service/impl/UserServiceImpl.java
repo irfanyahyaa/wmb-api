@@ -6,6 +6,7 @@ import com.enigma.wmb_api.entity.MUser;
 import com.enigma.wmb_api.repository.UserRepository;
 import com.enigma.wmb_api.service.UserService;
 import com.enigma.wmb_api.specification.UserSpecification;
+import com.enigma.wmb_api.util.ValidationUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -18,9 +19,12 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
+    private final ValidationUtil validationUtil;
 
     @Override
     public MUser create(newUserRequest request) {
+        validationUtil.validate(request);
+
         MUser user = MUser
                 .builder()
                 .name(request.getName())
