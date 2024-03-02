@@ -11,5 +11,5 @@ public interface UserService  {
     MUser getById(String id);
     MUser update(MUser user);
     void updateMemberById(String id, Boolean isMember);
-    String delete(String id);
+    void delete(String id);
 }

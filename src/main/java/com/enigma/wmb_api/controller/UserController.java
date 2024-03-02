@@ -113,7 +113,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CommonResponse<String>>updateMemberUser(
+    public ResponseEntity<CommonResponse<String>> updateMemberUser(
             @PathVariable(name = "id") String id,
             @RequestParam(name = "is_member") Boolean isMember
     ) {
@@ -122,6 +122,21 @@ public class UserController {
         CommonResponse<String> commonResponse = CommonResponse.<String>builder()
                 .statuscode(HttpStatus.OK.value())
                 .message("User member updated successfully")
+                .build();
+
+        return ResponseEntity
+                .ok(commonResponse);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<CommonResponse<String>> deleteUser(
+            @PathVariable(name = "id") String id
+    ) {
+        userService.delete(id);
+
+        CommonResponse<String> commonResponse = CommonResponse.<String>builder()
+                .statuscode(HttpStatus.OK.value())
+                .message("User deleted successfully")
                 .build();
 
         return ResponseEntity
