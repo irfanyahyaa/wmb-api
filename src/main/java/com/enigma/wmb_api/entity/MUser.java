@@ -19,7 +19,7 @@ public class MUser {
     private String name;
 
     @Column(name = "mobile_phone_no", length = 20)
-    private String mobilePhoneNumber;
+    private String mobilePhoneNo;
 
     @Column(name = "is_member")
     private Boolean isMember;

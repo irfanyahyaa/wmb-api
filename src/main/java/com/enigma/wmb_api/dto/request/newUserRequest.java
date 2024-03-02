@@ -12,6 +12,6 @@ public class newUserRequest {
     @NotBlank(message = "name cannot be blank")
     private String name;
     @NotBlank(message = "mobile_phone_no cannot be blank")
-    private String mobilePhoneNumber;
+    private String mobilePhoneNo;
     private Boolean isMember;
 }
