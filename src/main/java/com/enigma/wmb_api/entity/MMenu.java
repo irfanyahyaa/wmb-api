@@ -17,9 +17,9 @@ public class MMenu {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    @Column(name = "menu", length = 100)
+    @Column(name = "menu", length = 100, nullable = false)
     private String menu;
 
-    @Column(name = "price")
+    @Column(name = "price", nullable = false, columnDefinition = "BIGINT CHECK (price >= 0)")
     private Long price;
 }
