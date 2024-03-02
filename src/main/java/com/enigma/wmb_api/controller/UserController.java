@@ -86,13 +86,29 @@ public class UserController {
     ) {
         MUser user = userService.getById(id);
 
-        CommonResponse<MUser> response = CommonResponse.<MUser>builder()
+        CommonResponse<MUser> commonResponse = CommonResponse.<MUser>builder()
                 .statuscode(HttpStatus.OK.value())
                 .message("User fetched successfully")
                 .data(user)
                 .build();
 
         return ResponseEntity
-                .ok(response);
+                .ok(commonResponse);
+    }
+
+    @PutMapping
+    public ResponseEntity<CommonResponse<MUser>> updateUser(
+            @RequestBody MUser payload
+    ) {
+        MUser user = userService.update(payload);
+
+        CommonResponse<MUser> commonResponse = CommonResponse.<MUser>builder()
+                .statuscode(HttpStatus.OK.value())
+                .message("User updated successfully")
+                .data(user)
+                .build();
+
+        return ResponseEntity
+                .ok(commonResponse);
     }
 }

@@ -52,7 +52,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public MUser update(MUser user) {
-        return null;
+        getById(user.getId());
+        return userRepository.saveAndFlush(user);
     }
 
     @Override
