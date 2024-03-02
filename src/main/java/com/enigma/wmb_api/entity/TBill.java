@@ -25,8 +25,8 @@ public class TBill {
     private Date transDate;
 
     @ManyToOne
-    @JoinColumn(name = "customer_id")
-    private MCustomer customerId;
+    @JoinColumn(name = "user_id")
+    private MUser userId;
 
     @ManyToOne
     @JoinColumn(name = "table_id")
