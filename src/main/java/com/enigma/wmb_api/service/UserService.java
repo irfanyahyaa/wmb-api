@@ -7,8 +7,8 @@ import org.springframework.data.domain.Page;
 
 public interface UserService  {
     MUser create(newUserRequest request);
-    MUser getById(String id);
     Page<MUser> getAll(SearchUserRequest request);
+    MUser getById(String id);
     MUser update(MUser user);
     void updateMemberById(String id, Boolean member);
     String delete(String id);

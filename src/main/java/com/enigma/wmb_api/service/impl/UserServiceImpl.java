@@ -32,11 +32,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public MUser getById(String id) {
-        return null;
-    }
-
-    @Override
     public Page<MUser> getAll(SearchUserRequest request) {
         if (request.getPage() <= 0) request.setPage(1);
 
@@ -47,6 +42,12 @@ public class UserServiceImpl implements UserService {
         Specification<MUser> specification = UserSpecification.getSpecification(request);
 
         return userRepository.findAll(specification, pageable);
+    }
+
+    @Override
+    public MUser getById(String id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
     }
 
     @Override

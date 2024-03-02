@@ -79,4 +79,20 @@ public class UserController {
         return ResponseEntity
                 .ok(commonResponse);
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<CommonResponse<MUser>> getUserById(
+            @PathVariable("id") String id
+    ) {
+        MUser user = userService.getById(id);
+
+        CommonResponse<MUser> response = CommonResponse.<MUser>builder()
+                .statuscode(HttpStatus.OK.value())
+                .message("User fetched successfully")
+                .data(user)
+                .build();
+
+        return ResponseEntity
+                .ok(response);
+    }
 }
