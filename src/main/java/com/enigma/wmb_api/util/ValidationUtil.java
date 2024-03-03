@@ -1,10 +1,14 @@
 package com.enigma.wmb_api.util;
 
+import com.enigma.wmb_api.dto.response.CommonResponse;
+import com.enigma.wmb_api.entity.MUser;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validator;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -30,4 +34,10 @@ public class ValidationUtil {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid sort field");
         }
     }
+
+    /*public void validatePage(Class<?> object, Page<?> page) {
+        if (object.getPage() > page.getTotalPages()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Page number exceeds total pages available");
+        }
+    }*/
 }

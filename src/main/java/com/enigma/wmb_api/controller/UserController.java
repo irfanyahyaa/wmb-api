@@ -74,17 +74,6 @@ public class UserController {
                 .hasPrevious(users.hasPrevious())
                 .build();
 
-        // coba dibuat validationUtil
-        if (page > users.getTotalPages()) {
-            CommonResponse<List<MUser>> errorResponse = CommonResponse.<List<MUser>>builder()
-                    .statuscode(HttpStatus.BAD_REQUEST.value())
-                    .message("Page number exceeds total pages available")
-                    .paging(pagingResponse)
-                    .build();
-
-            return ResponseEntity.badRequest().body(errorResponse);
-        }
-
         CommonResponse<List<MUser>> commonResponse = CommonResponse.<List<MUser>>builder()
                 .statuscode(HttpStatus.OK.value())
                 .message("User fetched successfully")

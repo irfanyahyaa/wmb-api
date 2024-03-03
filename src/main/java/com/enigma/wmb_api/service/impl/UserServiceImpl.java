@@ -2,6 +2,7 @@ package com.enigma.wmb_api.service.impl;
 
 import com.enigma.wmb_api.dto.request.SearchUserRequest;
 import com.enigma.wmb_api.dto.request.newUserRequest;
+import com.enigma.wmb_api.dto.response.CommonResponse;
 import com.enigma.wmb_api.entity.MUser;
 import com.enigma.wmb_api.repository.UserRepository;
 import com.enigma.wmb_api.service.UserService;
@@ -14,8 +15,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -39,7 +43,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Page<MUser> getAll(SearchUserRequest request) {
+        // validate DTO
         validationUtil.validate(request);
+        // validate sortBy
         validationUtil.validateSortFields(MUser.class, request.getSortBy());
 
         if (request.getPage() <= 0) request.setPage(1);
@@ -50,7 +56,14 @@ public class UserServiceImpl implements UserService {
 
         Specification<MUser> specification = UserSpecification.getSpecification(request);
 
-        return userRepository.findAll(specification, pageable);
+        Page<MUser> userPage = userRepository.findAll(specification, pageable);
+
+        // validate page
+        if (request.getPage() > userPage.getTotalPages()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Page number exceeds total pages available");
+        }
+
+        return userPage;
     }
 
     @Override
