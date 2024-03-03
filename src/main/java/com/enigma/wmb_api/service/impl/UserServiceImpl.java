@@ -37,6 +37,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Page<MUser> getAll(SearchUserRequest request) {
+        validationUtil.validate(request);
+
         if (request.getPage() <= 0) request.setPage(1);
 
         Sort sort = Sort.by(Sort.Direction.fromString(request.getDirection()), request.getSortBy());
