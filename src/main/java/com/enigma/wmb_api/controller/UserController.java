@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -27,6 +28,7 @@ public class UserController {
     ) {
         MUser user = userService.create(request);
 
+        // coba dibuat util
         CommonResponse<MUser> response = CommonResponse.<MUser>builder()
                 .statuscode(HttpStatus.CREATED.value())
                 .message("User created successfully")
@@ -69,6 +71,7 @@ public class UserController {
                 .hasPrevious(users.hasPrevious())
                 .build();
 
+        // coba dibuat validationUtil
         if (page > users.getTotalPages()) {
             CommonResponse<List<MUser>> errorResponse = CommonResponse.<List<MUser>>builder()
                     .statuscode(HttpStatus.BAD_REQUEST.value())

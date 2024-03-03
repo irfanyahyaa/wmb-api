@@ -1,9 +1,7 @@
 package com.enigma.wmb_api.controller;
 
 import com.enigma.wmb_api.dto.response.CommonResponse;
-import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import jakarta.validation.ConstraintViolationException;
-import jakarta.validation.UnexpectedTypeException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -31,7 +29,7 @@ public class ErrorController {
     public ResponseEntity<CommonResponse<?>> constraintViolationExceptionHandler(
             ConstraintViolationException exception
     ) {
-        CommonResponse<?> commonResponse =CommonResponse.builder()
+        CommonResponse<?> commonResponse = CommonResponse.builder()
                 .statuscode(HttpStatus.BAD_REQUEST.value())
                 .message(exception.getMessage())
                 .build();
@@ -45,7 +43,7 @@ public class ErrorController {
     public ResponseEntity<CommonResponse<?>> methodArgumentTypeMismatchExceptionHandler(
             MethodArgumentTypeMismatchException exception
     ) {
-        CommonResponse<?> commonResponse =CommonResponse.builder()
+        CommonResponse<?> commonResponse = CommonResponse.builder()
                 .statuscode(HttpStatus.BAD_REQUEST.value())
                 .message(exception.getMessage())
                 .build();

@@ -13,7 +13,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 @RequiredArgsConstructor
@@ -52,28 +54,33 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public MUser getById(String id) {
-        return userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+        return findByIdOrNotFound(id);
     }
 
     @Override
     public MUser update(MUser user) {
-        getById(user.getId());
+        findByIdOrNotFound(user.getId());
 
         return userRepository.saveAndFlush(user);
     }
 
     @Override
     public void updateMemberById(String id, Boolean isMember) {
-        getById(id);
+        findByIdOrNotFound(id);
 
         userRepository.updateMember(id, isMember);
     }
 
     @Override
     public void delete(String id) {
-        getById(id);
+        findByIdOrNotFound(id);
 
         userRepository.deleteById(id);
+    }
+
+    // coba dibuat util
+    private MUser findByIdOrNotFound(String id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
     }
 }
