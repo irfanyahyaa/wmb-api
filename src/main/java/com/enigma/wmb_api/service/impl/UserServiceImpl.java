@@ -6,7 +6,6 @@ import com.enigma.wmb_api.entity.MUser;
 import com.enigma.wmb_api.repository.UserRepository;
 import com.enigma.wmb_api.service.UserService;
 import com.enigma.wmb_api.specification.UserSpecification;
-import com.enigma.wmb_api.util.EntityUtil;
 import com.enigma.wmb_api.util.ValidationUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -23,7 +22,6 @@ import org.springframework.web.server.ResponseStatusException;
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final ValidationUtil validationUtil;
-    private final EntityUtil entityUtil;
 
     @Override
     public MUser create(newUserRequest request) {
@@ -42,12 +40,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public Page<MUser> getAll(SearchUserRequest request) {
         validationUtil.validate(request);
+        validationUtil.validateSortFields(MUser.class, request.getSortBy());
 
         if (request.getPage() <= 0) request.setPage(1);
-
-        if (!entityUtil.getValidSortFields(MUser.class).contains(request.getSortBy())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid sort field");
-        }
 
         Sort sort = Sort.by(Sort.Direction.fromString(request.getDirection()), request.getSortBy());
 
