@@ -7,11 +7,13 @@ import com.enigma.wmb_api.dto.response.CommonResponse;
 import com.enigma.wmb_api.dto.response.PagingResponse;
 import com.enigma.wmb_api.entity.MUser;
 import com.enigma.wmb_api.service.UserService;
+import com.enigma.wmb_api.util.EntityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
@@ -21,6 +23,7 @@ import java.util.Optional;
 @RequestMapping(APIUrl.USER)
 public class UserController {
     private final UserService userService;
+    private final EntityUtil entityUtil;
 
     @PostMapping
     public ResponseEntity<CommonResponse<MUser>> createNewUser(

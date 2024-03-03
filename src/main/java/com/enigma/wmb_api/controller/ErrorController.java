@@ -2,6 +2,7 @@ package com.enigma.wmb_api.controller;
 
 import com.enigma.wmb_api.dto.response.CommonResponse;
 import jakarta.validation.ConstraintViolationException;
+import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
