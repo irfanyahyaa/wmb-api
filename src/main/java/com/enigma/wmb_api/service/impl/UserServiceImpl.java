@@ -1,8 +1,8 @@
 package com.enigma.wmb_api.service.impl;
 
 import com.enigma.wmb_api.dto.request.SearchUserRequest;
-import com.enigma.wmb_api.dto.request.newUserRequest;
-import com.enigma.wmb_api.dto.response.CommonResponse;
+import com.enigma.wmb_api.dto.request.UserRequest;
+import com.enigma.wmb_api.dto.response.UserResponse;
 import com.enigma.wmb_api.entity.MUser;
 import com.enigma.wmb_api.repository.UserRepository;
 import com.enigma.wmb_api.service.UserService;
@@ -15,11 +15,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -28,21 +25,27 @@ public class UserServiceImpl implements UserService {
     private final ValidationUtil validationUtil;
 
     @Override
-    public MUser create(newUserRequest request) {
+    public UserResponse create(UserRequest request) {
         validationUtil.validate(request);
 
-        MUser user = MUser
-                .builder()
+        MUser user = MUser.builder()
                 .name(request.getName())
                 .mobilePhoneNo(request.getMobilePhoneNo())
                 .isMember(request.getIsMember())
                 .build();
 
-        return userRepository.saveAndFlush(user);
+        userRepository.saveAndFlush(user);
+
+        return UserResponse.builder()
+                .id(user.getId())
+                .name(user.getName())
+                .mobilePhoneNo(user.getMobilePhoneNo())
+                .isMember(user.getIsMember())
+                .build();
     }
 
     @Override
-    public Page<MUser> getAll(SearchUserRequest request) {
+    public Page<UserResponse> getAll(SearchUserRequest request) {
         // validate DTO
         validationUtil.validate(request);
         // validate sortBy
@@ -59,33 +62,73 @@ public class UserServiceImpl implements UserService {
         // validate empty data
         validationUtil.validateEmptyData(userPage, "Users");
 
-        return userPage;
+        return userPage.map(user -> UserResponse.builder()
+                .id(user.getId())
+                .name(user.getName())
+                .mobilePhoneNo(user.getMobilePhoneNo())
+                .isMember(user.getIsMember())
+                .build());
     }
 
     @Override
-    public MUser getById(String id) {
-        return findByIdOrNotFound(id);
+    public UserResponse getById(String id) {
+        MUser user = findByIdOrNotFound(id);
+
+        return UserResponse.builder()
+                .id(user.getId())
+                .name(user.getName())
+                .mobilePhoneNo(user.getMobilePhoneNo())
+                .isMember(user.getIsMember())
+                .build();
     }
 
     @Override
-    public MUser update(MUser user) {
-        findByIdOrNotFound(user.getId());
+    public UserResponse update(UserRequest request) {
+        validationUtil.validate(request);
+        findByIdOrNotFound(request.getId());
 
-        return userRepository.saveAndFlush(user);
+        MUser user = MUser.builder()
+                .id(request.getId())
+                .name(request.getName())
+                .mobilePhoneNo(request.getMobilePhoneNo())
+                .isMember(request.getIsMember())
+                .build();
+        userRepository.saveAndFlush(user);
+
+        return UserResponse.builder()
+                .id(user.getId())
+                .name(user.getName())
+                .mobilePhoneNo(user.getMobilePhoneNo())
+                .isMember(user.getIsMember())
+                .build();
     }
 
     @Override
-    public void updateMemberById(String id, Boolean isMember) {
-        findByIdOrNotFound(id);
-
+    public UserResponse updateMemberById(String id, Boolean isMember) {
+        MUser user = findByIdOrNotFound(id);
         userRepository.updateMember(id, isMember);
+
+        user.setIsMember(isMember);
+
+        return UserResponse.builder()
+                .id(user.getId())
+                .name(user.getName())
+                .mobilePhoneNo(user.getMobilePhoneNo())
+                .isMember(user.getIsMember())
+                .build();
     }
 
     @Override
-    public void delete(String id) {
-        findByIdOrNotFound(id);
-
+    public UserResponse delete(String id) {
+        MUser user = findByIdOrNotFound(id);
         userRepository.deleteById(id);
+
+        return UserResponse.builder()
+                .id(user.getId())
+                .name(user.getName())
+                .mobilePhoneNo(user.getMobilePhoneNo())
+                .isMember(user.getIsMember())
+                .build();
     }
 
     // coba dibuat util

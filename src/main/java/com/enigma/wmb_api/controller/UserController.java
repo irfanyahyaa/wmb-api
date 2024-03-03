@@ -2,37 +2,34 @@ package com.enigma.wmb_api.controller;
 
 import com.enigma.wmb_api.constant.APIUrl;
 import com.enigma.wmb_api.dto.request.SearchUserRequest;
-import com.enigma.wmb_api.dto.request.newUserRequest;
+import com.enigma.wmb_api.dto.request.UserRequest;
 import com.enigma.wmb_api.dto.response.CommonResponse;
 import com.enigma.wmb_api.dto.response.PagingResponse;
+import com.enigma.wmb_api.dto.response.UserResponse;
 import com.enigma.wmb_api.entity.MUser;
 import com.enigma.wmb_api.service.UserService;
-import com.enigma.wmb_api.util.EntityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(APIUrl.USER)
 public class UserController {
     private final UserService userService;
-    private final EntityUtil entityUtil;
 
     @PostMapping
-    public ResponseEntity<CommonResponse<MUser>> createNewUser(
-            @RequestBody newUserRequest request
+    public ResponseEntity<CommonResponse<UserResponse>> createNewUser(
+            @RequestBody UserRequest request
     ) {
-        MUser user = userService.create(request);
+        UserResponse user = userService.create(request);
 
         // coba dibuat util
-        CommonResponse<MUser> response = CommonResponse.<MUser>builder()
+        CommonResponse<UserResponse> response = CommonResponse.<UserResponse>builder()
                 .statuscode(HttpStatus.CREATED.value())
                 .message("User created successfully")
                 .data(user)
@@ -44,7 +41,7 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<CommonResponse<List<MUser>>> getAllUser(
+    public ResponseEntity<CommonResponse<List<UserResponse>>> getAllUsers(
             @RequestParam(name = "page", defaultValue = "1") Integer page,
             @RequestParam(name = "size", defaultValue = "10") Integer size,
             @RequestParam(name = "sortBy", defaultValue = "name") String sortBy,
@@ -63,7 +60,7 @@ public class UserController {
                 .isMember(isMember)
                 .build();
 
-        Page<MUser> users = userService.getAll(request);
+        Page<UserResponse> users = userService.getAll(request);
 
         PagingResponse pagingResponse = PagingResponse.builder()
                 .totalPages(users.getTotalPages())
@@ -74,7 +71,7 @@ public class UserController {
                 .hasPrevious(users.hasPrevious())
                 .build();
 
-        CommonResponse<List<MUser>> commonResponse = CommonResponse.<List<MUser>>builder()
+        CommonResponse<List<UserResponse>> commonResponse = CommonResponse.<List<UserResponse>>builder()
                 .statuscode(HttpStatus.OK.value())
                 .message("User fetched successfully")
                 .data(users.getContent())
@@ -86,12 +83,12 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CommonResponse<MUser>> getUserById(
+    public ResponseEntity<CommonResponse<UserResponse>> getUserById(
             @PathVariable("id") String id
     ) {
-        MUser user = userService.getById(id);
+        UserResponse user = userService.getById(id);
 
-        CommonResponse<MUser> commonResponse = CommonResponse.<MUser>builder()
+        CommonResponse<UserResponse> commonResponse = CommonResponse.<UserResponse>builder()
                 .statuscode(HttpStatus.OK.value())
                 .message("User fetched successfully")
                 .data(user)
@@ -102,12 +99,12 @@ public class UserController {
     }
 
     @PutMapping
-    public ResponseEntity<CommonResponse<MUser>> updateUser(
-            @RequestBody MUser payload
+    public ResponseEntity<CommonResponse<UserResponse>> updateUser(
+            @RequestBody UserRequest request
     ) {
-        MUser user = userService.update(payload);
+        UserResponse user = userService.update(request);
 
-        CommonResponse<MUser> commonResponse = CommonResponse.<MUser>builder()
+        CommonResponse<UserResponse> commonResponse = CommonResponse.<UserResponse>builder()
                 .statuscode(HttpStatus.OK.value())
                 .message("User updated successfully")
                 .data(user)
@@ -118,15 +115,16 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CommonResponse<String>> updateMemberUser(
+    public ResponseEntity<CommonResponse<UserResponse>> updateMemberUser(
             @PathVariable(name = "id") String id,
             @RequestParam(name = "is_member") Boolean isMember
     ) {
-        userService.updateMemberById(id, isMember);
+        UserResponse user = userService.updateMemberById(id, isMember);
 
-        CommonResponse<String> commonResponse = CommonResponse.<String>builder()
+        CommonResponse<UserResponse> commonResponse = CommonResponse.<UserResponse>builder()
                 .statuscode(HttpStatus.OK.value())
                 .message("User member updated successfully")
+                .data(user)
                 .build();
 
         return ResponseEntity
@@ -134,14 +132,15 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<CommonResponse<String>> deleteUser(
+    public ResponseEntity<CommonResponse<UserResponse>> deleteUser(
             @PathVariable(name = "id") String id
     ) {
-        userService.delete(id);
+        UserResponse user = userService.delete(id);
 
-        CommonResponse<String> commonResponse = CommonResponse.<String>builder()
+        CommonResponse<UserResponse> commonResponse = CommonResponse.<UserResponse>builder()
                 .statuscode(HttpStatus.OK.value())
                 .message("User deleted successfully")
+                .data(user)
                 .build();
 
         return ResponseEntity

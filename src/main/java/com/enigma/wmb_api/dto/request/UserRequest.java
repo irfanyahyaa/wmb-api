@@ -1,9 +1,7 @@
 package com.enigma.wmb_api.dto.request;
 
-import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
 import lombok.*;
 
 @Getter
@@ -11,7 +9,9 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class newUserRequest {
+public class UserRequest {
+    private String id;
+
     @NotBlank(message = "name cannot be blank")
     @Pattern(regexp = "[a-zA-Z]+", message = "name must be alphabetic")
     private String name;
