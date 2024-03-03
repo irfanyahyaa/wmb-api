@@ -53,15 +53,11 @@ public class UserServiceImpl implements UserService {
         Sort sort = Sort.by(Sort.Direction.fromString(request.getDirection()), request.getSortBy());
 
         Pageable pageable = PageRequest.of((request.getPage() - 1), request.getSize(), sort);
-
         Specification<MUser> specification = UserSpecification.getSpecification(request);
 
         Page<MUser> userPage = userRepository.findAll(specification, pageable);
-
-        // validate page
-        if (request.getPage() > userPage.getTotalPages()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Page number exceeds total pages available");
-        }
+        // validate empty data
+        validationUtil.validateEmptyData(userPage, "Users");
 
         return userPage;
     }
