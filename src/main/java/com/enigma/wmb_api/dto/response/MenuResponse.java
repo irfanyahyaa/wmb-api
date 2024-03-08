@@ -1,6 +1,6 @@
 package com.enigma.wmb_api.dto.response;
 
-import com.enigma.wmb_api.constant.TransType;
+import jakarta.persistence.Column;
 import lombok.*;
 
 @Getter
@@ -8,8 +8,10 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class TableResponse {
+public class MenuResponse {
     private String id;
 
-    private String name;
+    private String menu;
+
+    private Long price;
 }

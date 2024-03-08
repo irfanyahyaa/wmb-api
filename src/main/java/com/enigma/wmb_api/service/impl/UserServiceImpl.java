@@ -1,6 +1,6 @@
 package com.enigma.wmb_api.service.impl;
 
-import com.enigma.wmb_api.dto.request.SearchUserRequest;
+import com.enigma.wmb_api.dto.request.GetUserRequest;
 import com.enigma.wmb_api.dto.request.UserRequest;
 import com.enigma.wmb_api.dto.response.UserResponse;
 import com.enigma.wmb_api.entity.MUser;
@@ -33,7 +33,6 @@ public class UserServiceImpl implements UserService {
                 .mobilePhoneNo(request.getMobilePhoneNo())
                 .isMember(request.getIsMember())
                 .build();
-
         userRepository.saveAndFlush(user);
 
         return UserResponse.builder()
@@ -45,10 +44,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Page<UserResponse> getAll(SearchUserRequest request) {
-        // validate DTO
+    public Page<UserResponse> getAll(GetUserRequest request) {
         validationUtil.validate(request);
-        // validate sortBy
         validationUtil.validateSortFields(MUser.class, request.getSortBy());
 
         if (request.getPage() <= 0) request.setPage(1);
@@ -59,8 +56,8 @@ public class UserServiceImpl implements UserService {
         Specification<MUser> specification = UserSpecification.getSpecification(request);
 
         Page<MUser> userPage = userRepository.findAll(specification, pageable);
-        // validate empty data
-        validationUtil.validateEmptyData(userPage, "Users");
+
+        validationUtil.validateEmptyData(userPage, "users");
 
         return userPage.map(user -> UserResponse.builder()
                 .id(user.getId())
@@ -106,9 +103,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResponse updateMemberById(String id, Boolean isMember) {
         MUser user = findByIdOrNotFound(id);
-        userRepository.updateMember(id, isMember);
-
         user.setIsMember(isMember);
+        userRepository.updateMember(id, isMember);
 
         return UserResponse.builder()
                 .id(user.getId())
@@ -134,6 +130,6 @@ public class UserServiceImpl implements UserService {
     // coba dibuat util
     private MUser findByIdOrNotFound(String id) {
         return userRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "user not found"));
     }
 }

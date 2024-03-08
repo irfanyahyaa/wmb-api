@@ -27,7 +27,7 @@ public class ValidationUtil {
 
     public void validateSortFields(Class<?> comparator, String field) {
         if (!entityUtil.getValidSortFields(comparator).contains(field)) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid sort field");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "invalid sort field");
         }
     }
 

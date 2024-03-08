@@ -1,12 +1,11 @@
 package com.enigma.wmb_api.controller;
 
 import com.enigma.wmb_api.constant.APIUrl;
-import com.enigma.wmb_api.dto.request.SearchUserRequest;
+import com.enigma.wmb_api.dto.request.GetUserRequest;
 import com.enigma.wmb_api.dto.request.UserRequest;
 import com.enigma.wmb_api.dto.response.CommonResponse;
 import com.enigma.wmb_api.dto.response.PagingResponse;
 import com.enigma.wmb_api.dto.response.UserResponse;
-import com.enigma.wmb_api.entity.MUser;
 import com.enigma.wmb_api.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -50,7 +49,7 @@ public class UserController {
             @RequestParam(name = "mobilePhoneNo", required = false) String mobilePhoneNo,
             @RequestParam(name = "isMember", required = false) Boolean isMember
     ) {
-        SearchUserRequest request = SearchUserRequest.builder()
+        GetUserRequest request = GetUserRequest.builder()
                 .page(page)
                 .size(size)
                 .sortBy(sortBy)
