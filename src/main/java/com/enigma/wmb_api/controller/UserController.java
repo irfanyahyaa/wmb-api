@@ -31,7 +31,7 @@ public class UserController {
         // coba dibuat util
         CommonResponse<UserResponse> response = CommonResponse.<UserResponse>builder()
                 .statuscode(HttpStatus.CREATED.value())
-                .message("User created successfully")
+                .message("user created successfully")
                 .data(user)
                 .build();
 
@@ -73,7 +73,7 @@ public class UserController {
 
         CommonResponse<List<UserResponse>> commonResponse = CommonResponse.<List<UserResponse>>builder()
                 .statuscode(HttpStatus.OK.value())
-                .message("User fetched successfully")
+                .message("users fetched successfully")
                 .data(users.getContent())
                 .paging(pagingResponse)
                 .build();
@@ -90,7 +90,7 @@ public class UserController {
 
         CommonResponse<UserResponse> commonResponse = CommonResponse.<UserResponse>builder()
                 .statuscode(HttpStatus.OK.value())
-                .message("User fetched successfully")
+                .message("user fetched successfully")
                 .data(user)
                 .build();
 
@@ -106,7 +106,7 @@ public class UserController {
 
         CommonResponse<UserResponse> commonResponse = CommonResponse.<UserResponse>builder()
                 .statuscode(HttpStatus.OK.value())
-                .message("User updated successfully")
+                .message("user updated successfully")
                 .data(user)
                 .build();
 
@@ -123,7 +123,7 @@ public class UserController {
 
         CommonResponse<UserResponse> commonResponse = CommonResponse.<UserResponse>builder()
                 .statuscode(HttpStatus.OK.value())
-                .message("User member updated successfully")
+                .message("user member updated successfully")
                 .data(user)
                 .build();
 
@@ -139,7 +139,7 @@ public class UserController {
 
         CommonResponse<UserResponse> commonResponse = CommonResponse.<UserResponse>builder()
                 .statuscode(HttpStatus.OK.value())
-                .message("User deleted successfully")
+                .message("user deleted successfully")
                 .data(user)
                 .build();
 
