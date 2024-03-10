@@ -7,9 +7,9 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UserResponse {
+public class BillDetailResponse {
     private String id;
-    private String name;
-    private String mobilePhoneNo;
-    private Boolean isMember;
+    private String menuId;
+    private Long menuPrice;
+    private Integer qty;
 }

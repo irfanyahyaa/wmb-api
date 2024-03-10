@@ -19,11 +19,11 @@ public class TBillDetail {
     @ManyToOne
     @JoinColumn(name = "bill_id", nullable = false)
     @JsonBackReference
-    private TBill billId;
+    private TBill bill;
 
     @ManyToOne
     @JoinColumn(name = "menu_id", nullable = false)
-    private MMenu menuId;
+    private MMenu menu;
 
     @Column(name = "menu_price", nullable = false, updatable = false)
     private Long menuPrice;

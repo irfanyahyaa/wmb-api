@@ -46,7 +46,12 @@ public class TableServiceImpl implements TableService {
     }
 
     @Override
-    public TableResponse getById(String id) {
+    public MTable getByIdEntity(String id) {
+        return findByIdOrNotFound(id);
+    }
+
+    @Override
+    public TableResponse getByIdDTO(String id) {
         MTable table = findByIdOrNotFound(id);
 
         return TableResponse.builder()

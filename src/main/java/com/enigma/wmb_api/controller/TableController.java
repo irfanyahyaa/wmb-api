@@ -4,7 +4,6 @@ import com.enigma.wmb_api.constant.APIUrl;
 import com.enigma.wmb_api.dto.request.TableRequest;
 import com.enigma.wmb_api.dto.response.CommonResponse;
 import com.enigma.wmb_api.dto.response.TableResponse;
-import com.enigma.wmb_api.entity.MTable;
 import com.enigma.wmb_api.service.TableService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -15,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(APIUrl.TABLE)
+@RequestMapping(APIUrl.TABLE_API)
 public class TableController {
     public final TableService tableService;
 
@@ -54,7 +53,7 @@ public class TableController {
     public ResponseEntity<CommonResponse<TableResponse>> getTableById(
             @PathVariable(name = "id") String id
     ) {
-        TableResponse tableResponse = tableService.getById(id);
+        TableResponse tableResponse = tableService.getByIdDTO(id);
 
         CommonResponse<TableResponse> response = CommonResponse.<TableResponse>builder()
                 .statuscode(HttpStatus.OK.value())

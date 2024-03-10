@@ -1,6 +1,6 @@
 package com.enigma.wmb_api.dto.request;
 
-import jakarta.validation.constraints.Min;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.Pattern;
 import lombok.*;
 
@@ -9,7 +9,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class GetMenuRequest {
+public class GetBillRequest {
     private Integer page;
 
     private Integer size;
@@ -20,10 +20,12 @@ public class GetMenuRequest {
     @Pattern(regexp = "[a-zA-Z]+", message = "direction must be alphabetic")
     private String direction;
 
-    private String menu;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private String transDate;
 
-    @Min(value = 0, message = "price must be greater than or equal to 0")
-    private Long minPrice;
+    private String userId;
 
-    private Long maxPrice;
+    private String tableId;
+
+    private String transTypeId;
 }

@@ -4,7 +4,6 @@ import com.enigma.wmb_api.dto.request.GetMenuRequest;
 import com.enigma.wmb_api.dto.request.MenuRequest;
 import com.enigma.wmb_api.dto.response.MenuResponse;
 import com.enigma.wmb_api.entity.MMenu;
-import com.enigma.wmb_api.entity.MUser;
 import com.enigma.wmb_api.repository.MenuRepository;
 import com.enigma.wmb_api.service.MenuService;
 import com.enigma.wmb_api.specification.MenuSpecification;
@@ -18,8 +17,6 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -68,7 +65,12 @@ public class MenuServiceImpl implements MenuService {
     }
 
     @Override
-    public MenuResponse getById(String id) {
+    public MMenu getByIdEntity(String id) {
+        return findByIdOrNotFound(id);
+    }
+
+    @Override
+    public MenuResponse getByIdDTO(String id) {
         MMenu menu = findByIdOrNotFound(id);
 
         return MenuResponse.builder()

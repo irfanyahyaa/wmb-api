@@ -17,7 +17,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(APIUrl.USER)
+@RequestMapping(APIUrl.USER_API)
 public class UserController {
     private final UserService userService;
 
@@ -27,7 +27,6 @@ public class UserController {
     ) {
         UserResponse user = userService.create(request);
 
-        // coba dibuat util
         CommonResponse<UserResponse> response = CommonResponse.<UserResponse>builder()
                 .statuscode(HttpStatus.CREATED.value())
                 .message("user created successfully")
@@ -85,7 +84,7 @@ public class UserController {
     public ResponseEntity<CommonResponse<UserResponse>> getUserById(
             @PathVariable("id") String id
     ) {
-        UserResponse user = userService.getById(id);
+        UserResponse user = userService.getByIdDTO(id);
 
         CommonResponse<UserResponse> commonResponse = CommonResponse.<UserResponse>builder()
                 .statuscode(HttpStatus.OK.value())

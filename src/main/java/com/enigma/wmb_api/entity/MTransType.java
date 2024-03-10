@@ -2,16 +2,14 @@ package com.enigma.wmb_api.entity;
 
 import com.enigma.wmb_api.constant.TransType;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Builder
 @Table(name = "m_trans_type")
 public class MTransType {
     @Id

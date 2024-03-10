@@ -8,18 +8,16 @@ import com.enigma.wmb_api.dto.response.MenuResponse;
 import com.enigma.wmb_api.dto.response.PagingResponse;
 import com.enigma.wmb_api.service.MenuService;
 import lombok.RequiredArgsConstructor;
-import org.aspectj.lang.annotation.DeclareError;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.awt.*;
 import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(APIUrl.MENU)
+@RequestMapping(APIUrl.MENU_API)
 public class MenuController {
     private final MenuService menuService;
 
@@ -86,7 +84,7 @@ public class MenuController {
     public ResponseEntity<CommonResponse<MenuResponse>> getMenuById(
             @PathVariable(name = "id") String id
     ) {
-        MenuResponse menu = menuService.getById(id);
+        MenuResponse menu = menuService.getByIdDTO(id);
 
         CommonResponse<MenuResponse> response = CommonResponse.<MenuResponse>builder()
                 .statuscode(HttpStatus.OK.value())

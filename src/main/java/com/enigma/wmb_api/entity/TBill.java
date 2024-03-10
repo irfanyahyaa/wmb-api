@@ -19,22 +19,23 @@ public class TBill {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    @Column(name = "trans_date")
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "trans_date", updatable = false)
     private Date transDate;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private MUser userId;
+    private MUser user;
 
     @ManyToOne
     @JoinColumn(name = "table_id")
-    private MTable tableId;
+    private MTable table;
 
     @ManyToOne
     @JoinColumn(name = "trans_type_id")
-    private MTransType transTypeId;
+    private MTransType transType;
 
-    @OneToMany(mappedBy = "billId")
+    @OneToMany(mappedBy = "bill")
     @JsonManagedReference
-    private List<TBillDetail> billDetail;
+    private List<TBillDetail> billDetails;
 }

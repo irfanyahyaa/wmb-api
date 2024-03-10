@@ -1,6 +1,5 @@
 package com.enigma.wmb_api.dto.response;
 
-import com.enigma.wmb_api.constant.TransType;
 import lombok.*;
 
 @Getter
@@ -10,6 +9,5 @@ import lombok.*;
 @Builder
 public class TableResponse {
     private String id;
-
     private String name;
 }

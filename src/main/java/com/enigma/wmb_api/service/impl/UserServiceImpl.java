@@ -68,7 +68,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResponse getById(String id) {
+    public MUser getByIdEntity(String id) {
+        return findByIdOrNotFound(id);
+    }
+
+    @Override
+    public UserResponse getByIdDTO(String id) {
         MUser user = findByIdOrNotFound(id);
 
         return UserResponse.builder()
