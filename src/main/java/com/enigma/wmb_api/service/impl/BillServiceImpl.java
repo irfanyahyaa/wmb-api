@@ -36,8 +36,12 @@ public class BillServiceImpl implements BillService {
     @Override
     public BillResponse create(BillRequest request) {
         MUser user = userService.getByIdEntity(request.getUserId());
-        MTable table = null;
-        if (request.getTableId() != null) table = tableService.getByIdEntity(request.getTableId());
+        MTable table;
+        if (request.getTableId() == null || request.getTableId().isBlank()) {
+            table = tableService.getByNameEntity("Take Away");
+        } else {
+            table = tableService.getByIdEntity(request.getTableId());
+        };
         MTransType transType = transTypeService.getByIdEntity(request.getTransTypeId());
 
         TBill trx = TBill.builder()

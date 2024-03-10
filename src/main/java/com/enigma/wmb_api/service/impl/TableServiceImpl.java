@@ -6,18 +6,34 @@ import com.enigma.wmb_api.entity.MTable;
 import com.enigma.wmb_api.repository.TableRepository;
 import com.enigma.wmb_api.service.TableService;
 import com.enigma.wmb_api.util.ValidationUtil;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class TableServiceImpl implements TableService {
     private final TableRepository tableRepository;
     private final ValidationUtil validationUtil;
+
+    @Transactional(rollbackFor = Exception.class)
+    @PostConstruct
+    public void initTakeAway() {
+        Optional<MTable> takeAway = tableRepository.findByName("Take Away");
+        if (takeAway.isPresent()) return;
+
+        MTable noTable = MTable.builder()
+                .name("Take Away")
+                .build();
+
+        tableRepository.save(noTable);
+    }
 
     @Override
     public TableResponse create(TableRequest request) {
@@ -43,6 +59,12 @@ public class TableServiceImpl implements TableService {
                 .id(table.getId())
                 .name(table.getName())
                 .build()).toList();
+    }
+
+    @Override
+    public MTable getByNameEntity(String name) {
+        return tableRepository.findByName(name)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "table not found"));
     }
 
     @Override

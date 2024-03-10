@@ -11,6 +11,8 @@ public interface TableService {
 
     List<TableResponse> getAll();
 
+    MTable getByNameEntity(String name);
+
     MTable getByIdEntity(String id);
 
     TableResponse getByIdDTO(String id);

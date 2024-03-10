@@ -15,6 +15,6 @@ public class MTable {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    @Column(name = "name", length = 5)
+    @Column(name = "name")
     private String name;
 }
