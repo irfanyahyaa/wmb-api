@@ -32,7 +32,7 @@ public class BillController {
         BillResponse transaction = billService.create(request);
 
         CommonResponse<BillResponse> response = CommonResponse.<BillResponse>builder()
-                .statuscode(HttpStatus.CREATED.value())
+                .statusCode(HttpStatus.CREATED.value())
                 .message("bill created successfully")
                 .data(transaction)
                 .build();
@@ -99,7 +99,7 @@ public class BillController {
         }).toList();
 
         CommonResponse<List<BillResponse>> response = CommonResponse.<List<BillResponse>>builder()
-                .statuscode(HttpStatus.OK.value())
+                .statusCode(HttpStatus.OK.value())
                 .message("bills fetched successfully")
                 .data(billResponses)
                 .paging(pagingResponse)
@@ -119,7 +119,7 @@ public class BillController {
         BillResponse bill = billService.getById(id);
 
         CommonResponse<BillResponse> response = CommonResponse.<BillResponse>builder()
-                .statuscode(HttpStatus.OK.value())
+                .statusCode(HttpStatus.OK.value())
                 .message("bill fetched successfully")
                 .data(bill)
                 .build();

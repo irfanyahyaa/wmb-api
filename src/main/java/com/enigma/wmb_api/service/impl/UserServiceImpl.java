@@ -70,17 +70,17 @@ public class UserServiceImpl implements UserService {
                 .build();
     }
 
-    // bug, relasinya hilang
     @Override
     public UserResponse update(UserRequest request) {
         validationUtil.validate(request);
-        findByIdOrNotFound(request.getId());
+        MUser userFound = findByIdOrNotFound(request.getId());
 
         MUser user = MUser.builder()
                 .id(request.getId())
                 .name(request.getName())
                 .mobilePhoneNo(request.getMobilePhoneNo())
-                .isActive(request.getIsActive())
+                .isActive(userFound.getIsActive())
+                .userAccount(userFound.getUserAccount())
                 .build();
         userRepository.saveAndFlush(user);
 

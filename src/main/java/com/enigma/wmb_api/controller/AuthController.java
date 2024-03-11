@@ -31,7 +31,7 @@ public class AuthController {
         RegisterResponse register = authService.register(request);
 
         CommonResponse<RegisterResponse> response = CommonResponse.<RegisterResponse>builder()
-                .statuscode(HttpStatus.CREATED.value())
+                .statusCode(HttpStatus.CREATED.value())
                 .message("user created successfully")
                 .data(register)
                 .build();

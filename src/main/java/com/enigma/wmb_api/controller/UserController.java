@@ -53,7 +53,7 @@ public class UserController {
                 .build();
 
         CommonResponse<List<UserResponse>> commonResponse = CommonResponse.<List<UserResponse>>builder()
-                .statuscode(HttpStatus.OK.value())
+                .statusCode(HttpStatus.OK.value())
                 .message("users fetched successfully")
                 .data(users.getContent())
                 .paging(pagingResponse)
@@ -70,7 +70,7 @@ public class UserController {
         UserResponse user = userService.getByIdDTO(id);
 
         CommonResponse<UserResponse> commonResponse = CommonResponse.<UserResponse>builder()
-                .statuscode(HttpStatus.OK.value())
+                .statusCode(HttpStatus.OK.value())
                 .message("user fetched successfully")
                 .data(user)
                 .build();
@@ -86,7 +86,7 @@ public class UserController {
         UserResponse user = userService.update(request);
 
         CommonResponse<UserResponse> commonResponse = CommonResponse.<UserResponse>builder()
-                .statuscode(HttpStatus.OK.value())
+                .statusCode(HttpStatus.OK.value())
                 .message("user updated successfully")
                 .data(user)
                 .build();
@@ -103,7 +103,7 @@ public class UserController {
         UserResponse user = userService.updateMemberById(id, isActive);
 
         CommonResponse<UserResponse> commonResponse = CommonResponse.<UserResponse>builder()
-                .statuscode(HttpStatus.OK.value())
+                .statusCode(HttpStatus.OK.value())
                 .message("user member updated successfully")
                 .data(user)
                 .build();
@@ -119,7 +119,7 @@ public class UserController {
         UserResponse user = userService.delete(id);
 
         CommonResponse<UserResponse> commonResponse = CommonResponse.<UserResponse>builder()
-                .statuscode(HttpStatus.OK.value())
+                .statusCode(HttpStatus.OK.value())
                 .message("user deleted successfully")
                 .data(user)
                 .build();

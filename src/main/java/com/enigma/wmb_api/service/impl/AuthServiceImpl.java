@@ -12,6 +12,7 @@ import com.enigma.wmb_api.service.AuthService;
 import com.enigma.wmb_api.service.RoleService;
 import com.enigma.wmb_api.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -29,7 +30,7 @@ public class AuthServiceImpl implements AuthService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public RegisterResponse register(AuthRequest request) {
+    public RegisterResponse register(AuthRequest request) throws DataIntegrityViolationException {
         MRole role = roleService.getOrSave(UserRole.ROLE_CUSTOMER);
         String hashPassword = passwordEncoder.encode(request.getPassword());
 

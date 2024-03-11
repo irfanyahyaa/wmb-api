@@ -28,7 +28,7 @@ public class MenuController {
         MenuResponse menu = menuService.create(request);
 
         CommonResponse<MenuResponse> response = CommonResponse.<MenuResponse>builder()
-                .statuscode(HttpStatus.CREATED.value())
+                .statusCode(HttpStatus.CREATED.value())
                 .message("menu created successfully")
                 .data(menu)
                 .build();
@@ -70,7 +70,7 @@ public class MenuController {
                 .build();
 
         CommonResponse<List<MenuResponse>> response = CommonResponse.<List<MenuResponse>>builder()
-                .statuscode(HttpStatus.OK.value())
+                .statusCode(HttpStatus.OK.value())
                 .message("menus fetched successfully")
                 .data(menus.getContent())
                 .paging(pagingResponse)
@@ -87,7 +87,7 @@ public class MenuController {
         MenuResponse menu = menuService.getByIdDTO(id);
 
         CommonResponse<MenuResponse> response = CommonResponse.<MenuResponse>builder()
-                .statuscode(HttpStatus.OK.value())
+                .statusCode(HttpStatus.OK.value())
                 .message("menu fetched successfully")
                 .data(menu)
                 .build();
@@ -102,7 +102,7 @@ public class MenuController {
         MenuResponse menu = menuService.update(request);
 
         CommonResponse<MenuResponse> response = CommonResponse.<MenuResponse>builder()
-                .statuscode(HttpStatus.OK.value())
+                .statusCode(HttpStatus.OK.value())
                 .message("menu updated successfully")
                 .data(menu)
                 .build();
@@ -117,7 +117,7 @@ public class MenuController {
         MenuResponse menu = menuService.delete(id);
 
         CommonResponse<MenuResponse> response = CommonResponse.<MenuResponse>builder()
-                .statuscode(HttpStatus.OK.value())
+                .statusCode(HttpStatus.OK.value())
                 .message("menu deleted successfully")
                 .data(menu)
                 .build();

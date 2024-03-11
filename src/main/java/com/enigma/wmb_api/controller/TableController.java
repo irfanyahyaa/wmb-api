@@ -25,7 +25,7 @@ public class TableController {
         TableResponse table = tableService.create(request);
 
         CommonResponse<TableResponse> response = CommonResponse.<TableResponse>builder()
-                .statuscode(HttpStatus.CREATED.value())
+                .statusCode(HttpStatus.CREATED.value())
                 .message("table created successfully")
                 .data(table)
                 .build();
@@ -40,7 +40,7 @@ public class TableController {
         List<TableResponse> tableResponse = tableService.getAll();
 
         CommonResponse<List<TableResponse>> response = CommonResponse.<List<TableResponse>>builder()
-                .statuscode(HttpStatus.OK.value())
+                .statusCode(HttpStatus.OK.value())
                 .message("tables fetched successfully")
                 .data(tableResponse)
                 .build();
@@ -56,7 +56,7 @@ public class TableController {
         TableResponse tableResponse = tableService.getByIdDTO(id);
 
         CommonResponse<TableResponse> response = CommonResponse.<TableResponse>builder()
-                .statuscode(HttpStatus.OK.value())
+                .statusCode(HttpStatus.OK.value())
                 .message("table fetched successfully")
                 .data(tableResponse)
                 .build();
@@ -72,7 +72,7 @@ public class TableController {
         TableResponse tableResponse = tableService.update(request);
 
         CommonResponse<TableResponse> response = CommonResponse.<TableResponse>builder()
-                .statuscode(HttpStatus.OK.value())
+                .statusCode(HttpStatus.OK.value())
                 .message("table updated successfully")
                 .data(tableResponse)
                 .build();
@@ -88,7 +88,7 @@ public class TableController {
         TableResponse tableResponse = tableService.delete(id);
 
         CommonResponse<TableResponse> response = CommonResponse.<TableResponse>builder()
-                .statuscode(HttpStatus.OK.value())
+                .statusCode(HttpStatus.OK.value())
                 .message("table deleted successfully")
                 .data(tableResponse)
                 .build();
