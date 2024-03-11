@@ -13,6 +13,6 @@ import org.springframework.stereotype.Repository;
 @Transactional
 public interface UserRepository extends JpaRepository<MUser, String>, JpaSpecificationExecutor<MUser> {
     @Modifying
-    @Query(value = "UPDATE m_user SET is_member = :isMember WHERE id = :id", nativeQuery = true)
-    void updateMember(@Param("id") String id, @Param("isMember") Boolean isMember);
+    @Query(value = "UPDATE m_user SET is_active = :isActive WHERE id = :id", nativeQuery = true)
+    void updateMember(@Param("id") String id, @Param("isActive") Boolean isActive);
 }

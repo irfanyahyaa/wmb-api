@@ -7,7 +7,7 @@ import com.enigma.wmb_api.entity.MUser;
 import org.springframework.data.domain.Page;
 
 public interface UserService {
-    UserResponse create(UserRequest request);
+    MUser create(MUser user);
 
     Page<UserResponse> getAll(GetUserRequest request);
 
@@ -17,7 +17,7 @@ public interface UserService {
 
     UserResponse update(UserRequest request);
 
-    UserResponse updateMemberById(String id, Boolean isMember);
+    UserResponse updateMemberById(String id, Boolean isActive);
 
     UserResponse delete(String id);
 }

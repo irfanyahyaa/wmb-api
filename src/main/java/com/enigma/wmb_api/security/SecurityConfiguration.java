@@ -39,6 +39,7 @@ public class SecurityConfiguration {
                     req.dispatcherTypeMatchers(DispatcherType.ERROR).permitAll()
                             .requestMatchers("/api/auth/**").permitAll()
                             .anyRequest().authenticated();
+//                            .anyRequest().permitAll();
                 })
                 .build();
     }

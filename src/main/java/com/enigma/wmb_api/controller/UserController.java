@@ -21,23 +21,6 @@ import java.util.List;
 public class UserController {
     private final UserService userService;
 
-    @PostMapping
-    public ResponseEntity<CommonResponse<UserResponse>> createNewUser(
-            @RequestBody UserRequest request
-    ) {
-        UserResponse user = userService.create(request);
-
-        CommonResponse<UserResponse> response = CommonResponse.<UserResponse>builder()
-                .statuscode(HttpStatus.CREATED.value())
-                .message("user created successfully")
-                .data(user)
-                .build();
-
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(response);
-    }
-
     @GetMapping
     public ResponseEntity<CommonResponse<List<UserResponse>>> getAllUsers(
             @RequestParam(name = "page", defaultValue = "1") Integer page,
@@ -46,7 +29,7 @@ public class UserController {
             @RequestParam(name = "direction", defaultValue = "asc") String direction,
             @RequestParam(name = "name", required = false) String name,
             @RequestParam(name = "mobilePhoneNo", required = false) String mobilePhoneNo,
-            @RequestParam(name = "isMember", required = false) Boolean isMember
+            @RequestParam(name = "isActive", required = false) Boolean isActive
     ) {
         GetUserRequest request = GetUserRequest.builder()
                 .page(page)
@@ -55,7 +38,7 @@ public class UserController {
                 .direction(direction)
                 .name(name)
                 .mobilePhoneNo(mobilePhoneNo)
-                .isMember(isMember)
+                .isActive(isActive)
                 .build();
 
         Page<UserResponse> users = userService.getAll(request);
@@ -115,9 +98,9 @@ public class UserController {
     @PutMapping("/{id}")
     public ResponseEntity<CommonResponse<UserResponse>> updateMemberUser(
             @PathVariable(name = "id") String id,
-            @RequestParam(name = "is_member") Boolean isMember
+            @RequestParam(name = "is_active") Boolean isActive
     ) {
-        UserResponse user = userService.updateMemberById(id, isMember);
+        UserResponse user = userService.updateMemberById(id, isActive);
 
         CommonResponse<UserResponse> commonResponse = CommonResponse.<UserResponse>builder()
                 .statuscode(HttpStatus.OK.value())

@@ -25,5 +25,5 @@ public class GetUserRequest {
     @Pattern(regexp = "[0-9]+", message = "mobilePhoneNo cannot be blank or must be numeric")
     private String mobilePhoneNo;
 
-    private Boolean isMember;
+    private Boolean isActive;
 }

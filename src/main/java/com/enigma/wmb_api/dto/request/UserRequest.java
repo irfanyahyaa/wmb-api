@@ -21,5 +21,5 @@ public class UserRequest {
 //    @Size(min = 10, max = 14, message = "mobilePhoneNo must be 10-14 digits")
     private String mobilePhoneNo;
 
-    private Boolean isMember;
+    private Boolean isActive;
 }

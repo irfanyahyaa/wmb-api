@@ -31,10 +31,10 @@ public class UserSpecification {
                 predicates.add(phonePredicate);
             }
 
-            if (request.getIsMember() != null) {
+            if (request.getIsActive() != null) {
                 Predicate memberPredicate = criteriaBuilder.equal(
-                        root.get(("isMember")),
-                        request.getIsMember()
+                        root.get(("isActive")),
+                        request.getIsActive()
                 );
 
                 predicates.add(memberPredicate);

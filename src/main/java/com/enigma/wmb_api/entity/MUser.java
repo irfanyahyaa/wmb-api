@@ -21,6 +21,10 @@ public class MUser {
     @Column(name = "mobile_phone_no", length = 20)
     private String mobilePhoneNo;
 
-    @Column(name = "is_member")
-    private Boolean isMember;
+    @Column(name = "is_active")
+    private Boolean isActive;
+
+    @OneToOne
+    @JoinColumn(name = "user_account_id", unique = true)
+    private MUserAccount userAccount;
 }

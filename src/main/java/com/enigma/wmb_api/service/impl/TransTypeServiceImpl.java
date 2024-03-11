@@ -5,7 +5,10 @@ import com.enigma.wmb_api.entity.MTransType;
 import com.enigma.wmb_api.repository.TransTypeRepository;
 import com.enigma.wmb_api.service.TransTypeService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 @RequiredArgsConstructor
@@ -20,6 +23,8 @@ public class TransTypeServiceImpl implements TransTypeService {
             transType = getOrSave(TransType.DI);
         } else if (id.equalsIgnoreCase(TransType.TA.toString())) {
             transType = getOrSave(TransType.TA);
+        } else {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "invalid transaction type");
         }
 
         return transType;

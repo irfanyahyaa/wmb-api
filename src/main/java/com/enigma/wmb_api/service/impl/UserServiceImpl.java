@@ -25,22 +25,8 @@ public class UserServiceImpl implements UserService {
     private final ValidationUtil validationUtil;
 
     @Override
-    public UserResponse create(UserRequest request) {
-        validationUtil.validate(request);
-
-        MUser user = MUser.builder()
-                .name(request.getName())
-                .mobilePhoneNo(request.getMobilePhoneNo())
-                .isMember(request.getIsMember())
-                .build();
-        userRepository.saveAndFlush(user);
-
-        return UserResponse.builder()
-                .id(user.getId())
-                .name(user.getName())
-                .mobilePhoneNo(user.getMobilePhoneNo())
-                .isMember(user.getIsMember())
-                .build();
+    public MUser create(MUser user) {
+        return userRepository.saveAndFlush(user);
     }
 
     @Override
@@ -63,7 +49,7 @@ public class UserServiceImpl implements UserService {
                 .id(user.getId())
                 .name(user.getName())
                 .mobilePhoneNo(user.getMobilePhoneNo())
-                .isMember(user.getIsMember())
+                .isActive(user.getIsActive())
                 .build());
     }
 
@@ -80,10 +66,11 @@ public class UserServiceImpl implements UserService {
                 .id(user.getId())
                 .name(user.getName())
                 .mobilePhoneNo(user.getMobilePhoneNo())
-                .isMember(user.getIsMember())
+                .isActive(user.getIsActive())
                 .build();
     }
 
+    // bug, relasinya hilang
     @Override
     public UserResponse update(UserRequest request) {
         validationUtil.validate(request);
@@ -93,7 +80,7 @@ public class UserServiceImpl implements UserService {
                 .id(request.getId())
                 .name(request.getName())
                 .mobilePhoneNo(request.getMobilePhoneNo())
-                .isMember(request.getIsMember())
+                .isActive(request.getIsActive())
                 .build();
         userRepository.saveAndFlush(user);
 
@@ -101,21 +88,21 @@ public class UserServiceImpl implements UserService {
                 .id(user.getId())
                 .name(user.getName())
                 .mobilePhoneNo(user.getMobilePhoneNo())
-                .isMember(user.getIsMember())
+                .isActive(user.getIsActive())
                 .build();
     }
 
     @Override
-    public UserResponse updateMemberById(String id, Boolean isMember) {
+    public UserResponse updateMemberById(String id, Boolean isActive) {
         MUser user = findByIdOrNotFound(id);
-        user.setIsMember(isMember);
-        userRepository.updateMember(id, isMember);
+        user.setIsActive(isActive);
+        userRepository.updateMember(id, isActive);
 
         return UserResponse.builder()
                 .id(user.getId())
                 .name(user.getName())
                 .mobilePhoneNo(user.getMobilePhoneNo())
-                .isMember(user.getIsMember())
+                .isActive(user.getIsActive())
                 .build();
     }
 
@@ -128,7 +115,7 @@ public class UserServiceImpl implements UserService {
                 .id(user.getId())
                 .name(user.getName())
                 .mobilePhoneNo(user.getMobilePhoneNo())
-                .isMember(user.getIsMember())
+                .isActive(user.getIsActive())
                 .build();
     }
 
