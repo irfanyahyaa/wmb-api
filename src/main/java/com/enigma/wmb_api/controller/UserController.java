@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,6 +22,7 @@ import java.util.List;
 public class UserController {
     private final UserService userService;
 
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'ADMIN')")
     @GetMapping
     public ResponseEntity<CommonResponse<List<UserResponse>>> getAllUsers(
             @RequestParam(name = "page", defaultValue = "1") Integer page,
@@ -63,6 +65,7 @@ public class UserController {
                 .ok(commonResponse);
     }
 
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'ADMIN') OR @securityService.checkUserLoggedInById(#id)")
     @GetMapping("/{id}")
     public ResponseEntity<CommonResponse<UserResponse>> getUserById(
             @PathVariable("id") String id
@@ -79,6 +82,7 @@ public class UserController {
                 .ok(commonResponse);
     }
 
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'ADMIN') OR @securityService.checkUserLoggedInByDTO(#request)")
     @PutMapping
     public ResponseEntity<CommonResponse<UserResponse>> updateUser(
             @RequestBody UserRequest request
@@ -95,6 +99,7 @@ public class UserController {
                 .ok(commonResponse);
     }
 
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<CommonResponse<UserResponse>> updateMemberUser(
             @PathVariable(name = "id") String id,
@@ -112,6 +117,7 @@ public class UserController {
                 .ok(commonResponse);
     }
 
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<CommonResponse<UserResponse>> deleteUser(
             @PathVariable(name = "id") String id

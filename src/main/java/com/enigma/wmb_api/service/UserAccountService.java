@@ -5,4 +5,5 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 
 public interface UserAccountService extends UserDetailsService {
     MUserAccount getByUserId(String id);
+    MUserAccount getByContext();
 }

@@ -37,7 +37,6 @@ public class AuthServiceImpl implements AuthService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
-
     @Value("${enigma_shop.username.superadmin}")
     private String superAdminUsername;
     @Value("${enigma_shop.password.superadmin}")
