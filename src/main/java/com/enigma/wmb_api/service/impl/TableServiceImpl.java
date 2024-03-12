@@ -35,6 +35,7 @@ public class TableServiceImpl implements TableService {
         tableRepository.save(noTable);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public TableResponse create(TableRequest request) {
         validationUtil.validate(request);
@@ -51,6 +52,7 @@ public class TableServiceImpl implements TableService {
                 .build();
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<TableResponse> getAll() {
         List<MTable> tableList = tableRepository.findAll();
@@ -61,17 +63,20 @@ public class TableServiceImpl implements TableService {
                 .build()).toList();
     }
 
+    @Transactional(readOnly = true)
     @Override
     public MTable getByNameEntity(String name) {
         return tableRepository.findByName(name)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "table not found"));
     }
 
+    @Transactional(readOnly = true)
     @Override
     public MTable getByIdEntity(String id) {
         return findByIdOrNotFound(id);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public TableResponse getByIdDTO(String id) {
         MTable table = findByIdOrNotFound(id);
@@ -82,6 +87,7 @@ public class TableServiceImpl implements TableService {
                 .build();
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public TableResponse update(TableRequest request) {
         validationUtil.validate(request);
@@ -99,6 +105,7 @@ public class TableServiceImpl implements TableService {
                 .build();
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public TableResponse delete(String id) {
         MTable table = findByIdOrNotFound(id);

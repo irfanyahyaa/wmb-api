@@ -8,16 +8,20 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
+
+import java.beans.Transient;
 
 @Service
 @RequiredArgsConstructor
 public class TransTypeServiceImpl implements TransTypeService {
     private final TransTypeRepository transTypeRepository;
 
+    @Transactional(readOnly = true)
     @Override
     public MTransType getByIdEntity(String id) {
-        MTransType transType = null;
+        MTransType transType;
 
         if (id.equalsIgnoreCase(TransType.DI.toString())) {
             transType = getOrSave(TransType.DI);
@@ -30,6 +34,7 @@ public class TransTypeServiceImpl implements TransTypeService {
         return transType;
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public MTransType getOrSave(TransType transType) {
         MTransType getTransType = transTypeRepository.findById(transType)

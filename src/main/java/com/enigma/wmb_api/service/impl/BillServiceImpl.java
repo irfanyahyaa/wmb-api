@@ -90,6 +90,7 @@ public class BillServiceImpl implements BillService {
                 .build();
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Page<TBill> getAll(GetBillRequest request) {
         if (request.getPage() <= 0) request.setPage(1);
@@ -103,6 +104,7 @@ public class BillServiceImpl implements BillService {
         return billRepository.findAll(specification, pageable);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public BillResponse getById(String id) {
         TBill bill = billRepository.findById(id)

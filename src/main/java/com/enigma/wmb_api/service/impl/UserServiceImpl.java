@@ -16,6 +16,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 @Service
@@ -24,11 +25,13 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final ValidationUtil validationUtil;
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public MUser create(MUser user) {
         return userRepository.saveAndFlush(user);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Page<UserResponse> getAll(GetUserRequest request) {
         validationUtil.validate(request);
@@ -53,11 +56,13 @@ public class UserServiceImpl implements UserService {
                 .build());
     }
 
+    @Transactional(readOnly = true)
     @Override
     public MUser getByIdEntity(String id) {
         return findByIdOrNotFound(id);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public UserResponse getByIdDTO(String id) {
         MUser user = findByIdOrNotFound(id);
@@ -70,6 +75,7 @@ public class UserServiceImpl implements UserService {
                 .build();
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public UserResponse update(UserRequest request) {
         validationUtil.validate(request);
@@ -92,6 +98,7 @@ public class UserServiceImpl implements UserService {
                 .build();
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public UserResponse updateMemberById(String id, Boolean isActive) {
         MUser user = findByIdOrNotFound(id);
@@ -106,6 +113,7 @@ public class UserServiceImpl implements UserService {
                 .build();
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public UserResponse delete(String id) {
         MUser user = findByIdOrNotFound(id);
@@ -119,7 +127,6 @@ public class UserServiceImpl implements UserService {
                 .build();
     }
 
-    // coba dibuat util
     private MUser findByIdOrNotFound(String id) {
         return userRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "user not found"));

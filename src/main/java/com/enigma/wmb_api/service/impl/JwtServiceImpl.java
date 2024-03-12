@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.Instant;
@@ -37,6 +38,7 @@ public class JwtServiceImpl implements JwtService {
         JWT_EXPIRATION = jwtExpiration;
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public String generateToken(MUserAccount userAccount) {
         try {
@@ -54,6 +56,7 @@ public class JwtServiceImpl implements JwtService {
         }
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public boolean verifyJwtToken(String bearerToken) {
         try {
@@ -71,6 +74,7 @@ public class JwtServiceImpl implements JwtService {
         }
     }
 
+    @Transactional(readOnly = true)
     @Override
     public JwtClaims getClaimsByToken(String bearerToken) {
         try {
