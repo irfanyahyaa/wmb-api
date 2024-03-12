@@ -20,4 +20,8 @@ public class MMenu {
 
     @Column(name = "price", nullable = false, columnDefinition = "BIGINT CHECK (price >= 0)")
     private Long price;
+
+    @OneToOne
+    @JoinColumn(name = "image_id", unique = true)
+    private MImage image;
 }

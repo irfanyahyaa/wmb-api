@@ -1,5 +1,6 @@
 package com.enigma.wmb_api.dto.response;
 
+import com.enigma.wmb_api.entity.MImage;
 import lombok.*;
 
 @Getter
@@ -11,4 +12,5 @@ public class MenuResponse {
     private String id;
     private String menu;
     private Long price;
+    private MImage image;
 }

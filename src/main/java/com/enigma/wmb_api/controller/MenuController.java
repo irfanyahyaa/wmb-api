@@ -7,12 +7,15 @@ import com.enigma.wmb_api.dto.response.CommonResponse;
 import com.enigma.wmb_api.dto.response.MenuResponse;
 import com.enigma.wmb_api.dto.response.PagingResponse;
 import com.enigma.wmb_api.service.MenuService;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -21,23 +24,46 @@ import java.util.List;
 @RequestMapping(APIUrl.MENU_API)
 public class MenuController {
     private final MenuService menuService;
+    private final ObjectMapper objectMapper;
 
     @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'ADMIN')")
     @PostMapping
     public ResponseEntity<CommonResponse<MenuResponse>> createNewMenu(
-            @RequestBody MenuRequest request
+//            @RequestBody MenuRequest request,
+            @RequestPart(name = "menu") String jsonMenu,
+            @RequestPart(name = "image", required = false) MultipartFile image
     ) {
-        MenuResponse menu = menuService.create(request);
+        CommonResponse.CommonResponseBuilder<MenuResponse> responseBuilder = CommonResponse.builder();
 
-        CommonResponse<MenuResponse> response = CommonResponse.<MenuResponse>builder()
-                .statusCode(HttpStatus.CREATED.value())
-                .message("menu created successfully")
-                .data(menu)
-                .build();
+        try {
+            MenuRequest request = objectMapper.readValue(jsonMenu, new TypeReference<>() {});
+            request.setImage(image);
+            MenuResponse menu = menuService.create(request);
 
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(response);
+            responseBuilder.statusCode(HttpStatus.CREATED.value());
+            responseBuilder.message("menu created successfully");
+            responseBuilder.data(menu);
+
+            return ResponseEntity
+                    .status(HttpStatus.CREATED)
+                    .body(responseBuilder.build());
+        } catch (Exception exception) {
+            responseBuilder.message("internal server error");
+            responseBuilder.statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseBuilder.build());
+        }
+
+//        MenuResponse menu = menuService.create(request);
+//
+//        CommonResponse<MenuResponse> response = CommonResponse.<MenuResponse>builder()
+//                .statusCode(HttpStatus.CREATED.value())
+//                .message("menu created successfully")
+//                .data(menu)
+//                .build();
+//
+//        return ResponseEntity
+//                .status(HttpStatus.CREATED)
+//                .body(response);
     }
 
     @GetMapping
