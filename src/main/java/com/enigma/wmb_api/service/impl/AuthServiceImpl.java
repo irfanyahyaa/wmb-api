@@ -9,10 +9,14 @@ import com.enigma.wmb_api.entity.MUser;
 import com.enigma.wmb_api.entity.MUserAccount;
 import com.enigma.wmb_api.repository.UserAccountRepository;
 import com.enigma.wmb_api.service.AuthService;
+import com.enigma.wmb_api.service.JwtService;
 import com.enigma.wmb_api.service.RoleService;
 import com.enigma.wmb_api.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -28,6 +32,8 @@ public class AuthServiceImpl implements AuthService {
     private final RoleService roleService;
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
+    private final AuthenticationManager authenticationManager;
 
     @Override
     public RegisterResponse register(AuthRequest request) throws DataIntegrityViolationException {
@@ -86,6 +92,20 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public LoginResponse login(AuthRequest request) {
-        return null;
+        Authentication authentication = new UsernamePasswordAuthenticationToken(
+                request.getUsername(),
+                request.getPassword()
+        );
+        Authentication authenticated = authenticationManager.authenticate(authentication);
+
+        MUserAccount userAccount = (MUserAccount) authenticated.getPrincipal();
+        String token = jwtService.generateToken(userAccount);
+
+        return LoginResponse.builder()
+                .username(userAccount.getUsername())
+                .roles(userAccount.getAuthorities().stream().map(
+                        GrantedAuthority::getAuthority).toList())
+                .token(token)
+                .build();
     }
 }

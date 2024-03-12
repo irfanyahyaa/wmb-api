@@ -1,6 +1,7 @@
 package com.enigma.wmb_api.security;
 
 import jakarta.servlet.DispatcherType;
+import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityFilterAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,35 +13,24 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
+@RequiredArgsConstructor
 public class SecurityConfiguration {
+    private final AuthenticationFilter authenticationFilter;
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
-        /*return httpSecurity
-                .httpBasic(AbstractHttpConfigurer::disable)
-                .csrf(AbstractHttpConfigurer::disable)
-                .exceptionHandling(config -> {
-                    config.accessDeniedHandler(accessDeniedHandler);
-                    config.authenticationEntryPoint(authenticationEntryPoint);
-                })
-                .sessionManagement(cfg -> cfg.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(req ->
-                        req.dispatcherTypeMatchers(DispatcherType.ERROR).permitAll()
-                                .requestMatchers("/api/auth/**").permitAll()
-                                .requestMatchers("/api/images/**").permitAll()
-                                .requestMatchers(HttpMethod.POST, "/api/bills/status").permitAll()
-                                .anyRequest().authenticated())
-                .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class)
-                .build();*/
-
         return httpSecurity
                 .httpBasic(AbstractHttpConfigurer::disable)
-                .csrf(AbstractHttpConfigurer::disable) // pembatasan pengiriman http request
+                // pembatasan pengiriman http request
+                .csrf(AbstractHttpConfigurer::disable)
+                // berfungsi untuk mencegah penyimpanan sesi login/token/user info ke dalam cookies
+                .sessionManagement(cfg -> cfg.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(req -> {
                     req.dispatcherTypeMatchers(DispatcherType.ERROR).permitAll()
                             .requestMatchers("/api/auth/**").permitAll()
-//                            .anyRequest().authenticated();
-                            .anyRequest().permitAll();
+                            .anyRequest().authenticated();
                 })
+                .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 }
