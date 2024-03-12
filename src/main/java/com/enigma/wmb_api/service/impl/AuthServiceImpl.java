@@ -58,7 +58,30 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public RegisterResponse registerAdmin(AuthRequest request) {
-        return null;
+        MRole roleCustomer = roleService.getOrSave(UserRole.ROLE_CUSTOMER);
+        MRole roleAdmin = roleService.getOrSave(UserRole.ROLE_ADMIN);
+        String hashPassword = passwordEncoder.encode(request.getPassword());
+
+        MUserAccount account = MUserAccount.builder()
+                .username("admin_" + request.getUsername())
+                .password(hashPassword)
+                .roles(List.of(roleAdmin, roleCustomer))
+                .isEnable(true)
+                .build();
+        userAccountRepository.saveAndFlush(account);
+
+        MUser user = MUser.builder()
+                .isActive(true)
+                .userAccount(account)
+                .build();
+        userService.create(user);
+
+        List<String> roles = account.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
+
+        return RegisterResponse.builder()
+                .username(account.getUsername())
+                .roles(roles)
+                .build();
     }
 
     @Override

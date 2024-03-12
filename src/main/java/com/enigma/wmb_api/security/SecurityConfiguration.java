@@ -38,8 +38,8 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(req -> {
                     req.dispatcherTypeMatchers(DispatcherType.ERROR).permitAll()
                             .requestMatchers("/api/auth/**").permitAll()
-                            .anyRequest().authenticated();
-//                            .anyRequest().permitAll();
+//                            .anyRequest().authenticated();
+                            .anyRequest().permitAll();
                 })
                 .build();
     }
