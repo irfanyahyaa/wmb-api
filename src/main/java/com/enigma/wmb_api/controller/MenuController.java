@@ -29,14 +29,14 @@ public class MenuController {
     @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'ADMIN')")
     @PostMapping
     public ResponseEntity<CommonResponse<MenuResponse>> createNewMenu(
-//            @RequestBody MenuRequest request,
             @RequestPart(name = "menu") String jsonMenu,
             @RequestPart(name = "image", required = false) MultipartFile image
     ) {
         CommonResponse.CommonResponseBuilder<MenuResponse> responseBuilder = CommonResponse.builder();
 
         try {
-            MenuRequest request = objectMapper.readValue(jsonMenu, new TypeReference<>() {});
+            MenuRequest request = objectMapper.readValue(jsonMenu, new TypeReference<>() {
+            });
             request.setImage(image);
             MenuResponse menu = menuService.create(request);
 
@@ -52,18 +52,6 @@ public class MenuController {
             responseBuilder.statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseBuilder.build());
         }
-
-//        MenuResponse menu = menuService.create(request);
-//
-//        CommonResponse<MenuResponse> response = CommonResponse.<MenuResponse>builder()
-//                .statusCode(HttpStatus.CREATED.value())
-//                .message("menu created successfully")
-//                .data(menu)
-//                .build();
-//
-//        return ResponseEntity
-//                .status(HttpStatus.CREATED)
-//                .body(response);
     }
 
     @GetMapping
@@ -126,17 +114,33 @@ public class MenuController {
     @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'ADMIN')")
     @PutMapping
     public ResponseEntity<CommonResponse<MenuResponse>> updateMenu(
-            @RequestBody MenuRequest request
+            @RequestPart(name = "menu") String jsonMenu,
+            @RequestPart(name = "image", required = false) MultipartFile image
+
+
     ) {
-        MenuResponse menu = menuService.update(request);
+        CommonResponse.CommonResponseBuilder<MenuResponse> responseBuilder = CommonResponse.builder();
 
-        CommonResponse<MenuResponse> response = CommonResponse.<MenuResponse>builder()
-                .statusCode(HttpStatus.OK.value())
-                .message("menu updated successfully")
-                .data(menu)
-                .build();
+        try {
+            MenuRequest request = objectMapper.readValue(jsonMenu, new TypeReference<>() {
+            });
+            request.setImage(image);
+            MenuResponse menu = menuService.update(request);
 
-        return ResponseEntity.ok(response);
+            CommonResponse<MenuResponse> response = CommonResponse.<MenuResponse>builder()
+                    .statusCode(HttpStatus.OK.value())
+                    .message("menu updated successfully")
+                    .data(menu)
+                    .build();
+
+            return ResponseEntity
+                    .ok(response);
+        } catch (Exception exception) {
+            responseBuilder.message("internal server error");
+            responseBuilder.statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseBuilder.build());
+        }
     }
 
     @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'ADMIN')")

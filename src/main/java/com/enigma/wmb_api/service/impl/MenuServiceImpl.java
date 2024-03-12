@@ -74,6 +74,7 @@ public class MenuServiceImpl implements MenuService {
                 .id(menu.getId())
                 .menu(menu.getMenu())
                 .price(menu.getPrice())
+                .image(menu.getImage())
                 .build());
     }
 
@@ -92,6 +93,7 @@ public class MenuServiceImpl implements MenuService {
                 .id(menu.getId())
                 .menu(menu.getMenu())
                 .price(menu.getPrice())
+                .image(menu.getImage())
                 .build();
     }
 
@@ -99,19 +101,25 @@ public class MenuServiceImpl implements MenuService {
     @Override
     public MenuResponse update(MenuRequest request) {
         validationUtil.validate(request);
-        findByIdOrNotFound(request.getId());
+        MMenu currMenu = findByIdOrNotFound(request.getId());
 
-        MMenu menu = MMenu.builder()
-                .id(request.getId())
-                .menu(request.getMenu())
-                .price(request.getPrice())
-                .build();
-        menuRepository.saveAndFlush(menu);
+        if (request.getImage() != null) {
+            MImage image = imageService.create(request.getImage());
+            String deletedImage = currMenu.getImage().getId();
+
+            currMenu.setImage(image);
+            imageService.deleteById(deletedImage);
+        }
+
+        currMenu.setMenu(request.getMenu());
+        currMenu.setPrice(request.getPrice());
+        menuRepository.saveAndFlush(currMenu);
 
         return MenuResponse.builder()
-                .id(menu.getId())
-                .menu(menu.getMenu())
-                .price(menu.getPrice())
+                .id(currMenu.getId())
+                .menu(currMenu.getMenu())
+                .price(currMenu.getPrice())
+                .image(currMenu.getImage())
                 .build();
     }
 
@@ -125,6 +133,7 @@ public class MenuServiceImpl implements MenuService {
                 .id(menu.getId())
                 .menu(menu.getMenu())
                 .price(menu.getPrice())
+                .image(menu.getImage())
                 .build();
     }
 
