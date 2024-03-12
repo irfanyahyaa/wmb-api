@@ -12,4 +12,5 @@ public class UserResponse {
     private String name;
     private String mobilePhoneNo;
     private Boolean isActive;
+    private String userAccountId;
 }

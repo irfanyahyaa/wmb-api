@@ -7,7 +7,7 @@ import com.enigma.wmb_api.entity.MUser;
 import org.springframework.data.domain.Page;
 
 public interface UserService {
-    MUser create(MUser user);
+    UserResponse create(MUser user);
 
     Page<UserResponse> getAll(GetUserRequest request);
 

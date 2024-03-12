@@ -27,8 +27,16 @@ public class UserServiceImpl implements UserService {
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public MUser create(MUser user) {
-        return userRepository.saveAndFlush(user);
+    public UserResponse create(MUser user) {
+        MUser userSaved = userRepository.saveAndFlush(user);
+
+        return UserResponse.builder()
+                .id(userSaved.getId())
+                .name(userSaved.getName())
+                .mobilePhoneNo(userSaved.getMobilePhoneNo())
+                .isActive(userSaved.getIsActive())
+                .userAccountId(userSaved.getUserAccount().getId())
+                .build();
     }
 
     @Transactional(readOnly = true)
@@ -53,6 +61,7 @@ public class UserServiceImpl implements UserService {
                 .name(user.getName())
                 .mobilePhoneNo(user.getMobilePhoneNo())
                 .isActive(user.getIsActive())
+                .userAccountId(user.getUserAccount().getId())
                 .build());
     }
 
@@ -72,6 +81,7 @@ public class UserServiceImpl implements UserService {
                 .name(user.getName())
                 .mobilePhoneNo(user.getMobilePhoneNo())
                 .isActive(user.getIsActive())
+                .userAccountId(user.getUserAccount().getId())
                 .build();
     }
 
@@ -95,6 +105,7 @@ public class UserServiceImpl implements UserService {
                 .name(user.getName())
                 .mobilePhoneNo(user.getMobilePhoneNo())
                 .isActive(user.getIsActive())
+                .userAccountId(user.getUserAccount().getId())
                 .build();
     }
 
@@ -110,6 +121,7 @@ public class UserServiceImpl implements UserService {
                 .name(user.getName())
                 .mobilePhoneNo(user.getMobilePhoneNo())
                 .isActive(user.getIsActive())
+                .userAccountId(user.getUserAccount().getId())
                 .build();
     }
 
@@ -124,6 +136,7 @@ public class UserServiceImpl implements UserService {
                 .name(user.getName())
                 .mobilePhoneNo(user.getMobilePhoneNo())
                 .isActive(user.getIsActive())
+                .userAccountId(user.getUserAccount().getId())
                 .build();
     }
 
