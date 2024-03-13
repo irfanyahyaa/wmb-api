@@ -4,6 +4,7 @@ import com.enigma.wmb_api.dto.request.BillRequest;
 import com.enigma.wmb_api.dto.request.GetBillRequest;
 import com.enigma.wmb_api.dto.response.BillDetailResponse;
 import com.enigma.wmb_api.dto.response.BillResponse;
+import com.enigma.wmb_api.dto.response.PaymentResponse;
 import com.enigma.wmb_api.entity.*;
 import com.enigma.wmb_api.repository.BillRepository;
 import com.enigma.wmb_api.service.*;
@@ -31,6 +32,7 @@ public class BillServiceImpl implements BillService {
     private final MenuService menuService;
     private final TableService tableService;
     private final TransTypeService transTypeService;
+    private final PaymentService paymentService;
 
     @Transactional(rollbackFor = Exception.class)
     @Override
@@ -73,6 +75,8 @@ public class BillServiceImpl implements BillService {
                         .qty(detail.getQty())
                         .build()).toList();
 
+        PaymentResponse payment = paymentService.createPayment(trx);
+
         BillResponse.BillResponseBuilder builder = BillResponse.builder();
 
         if (trx.getTable() != null) {
@@ -87,6 +91,7 @@ public class BillServiceImpl implements BillService {
                 .userId(trx.getUser().getId())
                 .transTypeId(trx.getTransType().getId().toString())
                 .billDetails(trxDetailsResponse)
+                .paymentResponse(payment)
                 .build();
     }
 
