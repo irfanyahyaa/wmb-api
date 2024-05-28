@@ -31,6 +31,8 @@ public class SecurityConfiguration {
                 .sessionManagement(cfg -> cfg.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(req -> {
                     req.dispatcherTypeMatchers(DispatcherType.ERROR).permitAll()
+                            .requestMatchers(HttpMethod.GET,"/api/menus/images/**").permitAll()
+                            .requestMatchers("/api-docs/**", "/swagger-ui/**").permitAll()
                             .requestMatchers("/api/auth/**").permitAll()
                             .anyRequest().authenticated();
                 })

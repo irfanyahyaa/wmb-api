@@ -6,15 +6,13 @@ import com.enigma.wmb_api.dto.response.CommonResponse;
 import com.enigma.wmb_api.dto.response.LoginResponse;
 import com.enigma.wmb_api.dto.response.RegisterResponse;
 import com.enigma.wmb_api.service.AuthService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -27,6 +25,7 @@ public class AuthController {
             produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
+    @SecurityRequirement(name = "Authorization")
     public ResponseEntity<CommonResponse<?>> registerUser(
             @RequestBody AuthRequest request
     ) {
@@ -49,6 +48,7 @@ public class AuthController {
             produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
+    @SecurityRequirement(name = "Authorization")
     public ResponseEntity<CommonResponse<?>> registerAdmin(
             @RequestBody AuthRequest request
     ) {
@@ -70,6 +70,7 @@ public class AuthController {
             produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
+    @SecurityRequirement(name = "Authorization")
     public ResponseEntity<CommonResponse<?>> login(
             @RequestBody AuthRequest request
     ) {
@@ -84,4 +85,23 @@ public class AuthController {
         return ResponseEntity
                 .ok(response);
     }
+
+    @GetMapping(path = "validate-token", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> validateToken() {
+        boolean valid = authService.validateToken();
+        if (valid) {
+            CommonResponse<String> response = CommonResponse.<String>builder()
+                    .statusCode(HttpStatus.OK.value())
+                    .message("Successfully validate token")
+                    .build();
+            return ResponseEntity.ok(response);
+        } else {
+            CommonResponse<String> response = CommonResponse.<String>builder()
+                    .statusCode(HttpStatus.UNAUTHORIZED.value())
+                    .message("Failed to validate token")
+                    .build();
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+        }
+    }
+
 }

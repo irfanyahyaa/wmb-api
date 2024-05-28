@@ -12,5 +12,5 @@ public class MenuResponse {
     private String id;
     private String menu;
     private Long price;
-    private MImage image;
+    private ImageResponse image;
 }

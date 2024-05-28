@@ -9,9 +9,11 @@ import com.enigma.wmb_api.dto.response.PagingResponse;
 import com.enigma.wmb_api.service.MenuService;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +29,8 @@ public class MenuController {
     private final ObjectMapper objectMapper;
 
     @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'ADMIN')")
-    @PostMapping
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @SecurityRequirement(name = "Authorization")
     public ResponseEntity<CommonResponse<MenuResponse>> createNewMenu(
             @RequestPart(name = "menu") String jsonMenu,
             @RequestPart(name = "image", required = false) MultipartFile image
@@ -54,7 +57,8 @@ public class MenuController {
         }
     }
 
-    @GetMapping
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @SecurityRequirement(name = "Authorization")
     public ResponseEntity<CommonResponse<List<MenuResponse>>> getAllMenus(
             @RequestParam(name = "page", defaultValue = "1") Integer page,
             @RequestParam(name = "size", defaultValue = "10") Integer size,
@@ -62,7 +66,8 @@ public class MenuController {
             @RequestParam(name = "direction", defaultValue = "asc") String direction,
             @RequestParam(name = "menu", required = false) String menu,
             @RequestParam(name = "minPrice", required = false) Long minPrice,
-            @RequestParam(name = "maxPrice", required = false) Long maxPrice
+            @RequestParam(name = "maxPrice", required = false) Long maxPrice,
+            @RequestParam(name = "q", required = false) String name
     ) {
         GetMenuRequest request = GetMenuRequest.builder()
                 .page(page)
@@ -72,6 +77,7 @@ public class MenuController {
                 .menu(menu)
                 .minPrice(minPrice)
                 .maxPrice(maxPrice)
+                .query(name)
                 .build();
 
         Page<MenuResponse> menus = menuService.getAll(request);
@@ -97,6 +103,7 @@ public class MenuController {
     }
 
     @GetMapping(path = "/{id}")
+    @SecurityRequirement(name = "Authorization")
     public ResponseEntity<CommonResponse<MenuResponse>> getMenuById(
             @PathVariable(name = "id") String id
     ) {
@@ -113,6 +120,7 @@ public class MenuController {
 
     @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'ADMIN')")
     @PutMapping
+    @SecurityRequirement(name = "Authorization")
     public ResponseEntity<CommonResponse<MenuResponse>> updateMenu(
             @RequestPart(name = "menu") String jsonMenu,
             @RequestPart(name = "image", required = false) MultipartFile image
@@ -145,6 +153,7 @@ public class MenuController {
 
     @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'ADMIN')")
     @DeleteMapping(path = "/{id}")
+    @SecurityRequirement(name = "Authorization")
     public ResponseEntity<CommonResponse<MenuResponse>> deleteMenu(
             @PathVariable(name = "id") String id
     ) {

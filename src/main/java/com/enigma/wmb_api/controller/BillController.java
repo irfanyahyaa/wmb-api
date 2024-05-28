@@ -9,6 +9,7 @@ import com.enigma.wmb_api.dto.response.CommonResponse;
 import com.enigma.wmb_api.dto.response.PagingResponse;
 import com.enigma.wmb_api.entity.TBill;
 import com.enigma.wmb_api.service.BillService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -22,6 +23,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(path = APIUrl.BILL_API)
+
 public class BillController {
     private final BillService billService;
 
@@ -30,6 +32,7 @@ public class BillController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
+    @SecurityRequirement(name = "Authorization")
     public ResponseEntity<CommonResponse<BillResponse>> createNewBill(@RequestBody BillRequest request) {
         BillResponse transaction = billService.create(request);
 
@@ -48,6 +51,7 @@ public class BillController {
     @GetMapping(
             produces = MediaType.APPLICATION_JSON_VALUE
     )
+    @SecurityRequirement(name = "Authorization")
     public ResponseEntity<CommonResponse<List<BillResponse>>> getAllBills(
             @RequestParam(name = "page", defaultValue = "1") Integer page,
             @RequestParam(name = "size", defaultValue = "10") Integer size,
@@ -87,6 +91,7 @@ public class BillController {
                     BillDetailResponse.builder()
                             .id(billDetail.getId())
                             .menuId(billDetail.getMenu().getId())
+                            .menuName(billDetail.getMenu().getMenu())
                             .menuPrice(billDetail.getMenuPrice())
                             .qty(billDetail.getQty())
                             .build()).toList();
@@ -95,7 +100,9 @@ public class BillController {
                     .id(bill.getId())
                     .transDate(bill.getTransDate())
                     .userId(bill.getUser().getId())
+                    .userName(bill.getUser().getName())
                     .tableId(bill.getTable().getId())
+                    .tableName(bill.getTable().getName())
                     .transTypeId(bill.getTransType().getId().toString())
                     .billDetails(billDetailResponses)
                     .build();
@@ -117,6 +124,7 @@ public class BillController {
             path = "/{id}",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
+    @SecurityRequirement(name = "Authorization")
     public ResponseEntity<CommonResponse<BillResponse>> getBillById(
             @PathVariable(name = "id") String id
     ) {

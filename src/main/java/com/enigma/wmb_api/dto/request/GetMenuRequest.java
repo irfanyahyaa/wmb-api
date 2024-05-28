@@ -20,6 +20,8 @@ public class GetMenuRequest {
     @Pattern(regexp = "[a-zA-Z]+", message = "direction must be alphabetic")
     private String direction;
 
+    private String query;
+
     private String menu;
 
     @Min(value = 0, message = "price must be greater than or equal to 0")

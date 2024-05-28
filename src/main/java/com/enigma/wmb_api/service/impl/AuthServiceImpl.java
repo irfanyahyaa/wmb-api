@@ -20,6 +20,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -60,6 +61,13 @@ public class AuthServiceImpl implements AuthService {
                 .build();
 
         userAccountRepository.save(account);
+
+        MUser user = MUser.builder()
+                .name(superAdminUsername)
+                .isActive(true)
+                .userAccount(account)
+                .build();
+        userService.create(user);
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -138,4 +146,13 @@ public class AuthServiceImpl implements AuthService {
                 .token(token)
                 .build();
     }
+
+    @Override
+    public boolean validateToken() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        MUserAccount userAccount = userAccountRepository.findByUsername(authentication.getPrincipal().toString())
+                .orElse(null);
+        return userAccount != null;
+    }
+
 }

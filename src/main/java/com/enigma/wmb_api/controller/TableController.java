@@ -5,6 +5,7 @@ import com.enigma.wmb_api.dto.request.TableRequest;
 import com.enigma.wmb_api.dto.response.CommonResponse;
 import com.enigma.wmb_api.dto.response.TableResponse;
 import com.enigma.wmb_api.service.TableService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +22,7 @@ public class TableController {
 
     @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'ADMIN')")
     @PostMapping
+    @SecurityRequirement(name = "Authorization")
     public ResponseEntity<CommonResponse<TableResponse>> createNewTable(
             @RequestBody TableRequest request
     ) {
@@ -38,6 +40,7 @@ public class TableController {
     }
 
     @GetMapping
+    @SecurityRequirement(name = "Authorization")
     public ResponseEntity<CommonResponse<List<TableResponse>>> getAllTables() {
         List<TableResponse> tableResponse = tableService.getAll();
 
@@ -52,6 +55,7 @@ public class TableController {
     }
 
     @GetMapping("/{id}")
+    @SecurityRequirement(name = "Authorization")
     public ResponseEntity<CommonResponse<TableResponse>> getTableById(
             @PathVariable(name = "id") String id
     ) {
@@ -69,6 +73,7 @@ public class TableController {
 
     @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'ADMIN')")
     @PutMapping
+    @SecurityRequirement(name = "Authorization")
     public ResponseEntity<CommonResponse<TableResponse>> updateTable(
             @RequestBody TableRequest request
     ) {
@@ -86,6 +91,7 @@ public class TableController {
 
     @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'ADMIN')")
     @DeleteMapping("/{id}")
+    @SecurityRequirement(name = "Authorization")
     public ResponseEntity<CommonResponse<TableResponse>> deleteTable(
             @PathVariable(name = "id") String id
     ) {

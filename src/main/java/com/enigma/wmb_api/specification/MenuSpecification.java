@@ -4,15 +4,37 @@ import com.enigma.wmb_api.dto.request.GetMenuRequest;
 import com.enigma.wmb_api.entity.MMenu;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class MenuSpecification {
-    public static Specification<MMenu> getSpecification(GetMenuRequest request) {
+    public static Specification<MMenu> getSpecification(String q) {
         return (root, query, criteriaBuilder) -> {
+            if (!StringUtils.hasText(q)) return criteriaBuilder.conjunction();
+
             List<Predicate> predicates = new ArrayList<>();
+            predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("menu")), "%" + q.toLowerCase() + "%"));
+
+            try {
+                Long price = Long.valueOf(q);
+                predicates.add(criteriaBuilder.equal(root.get("price"), price));
+            } catch (NumberFormatException e) {
+                // Ignore
+            }
+
+            try {
+                Integer stock = Integer.valueOf(q);
+                predicates.add(criteriaBuilder.equal(root.get("stock"), stock));
+            } catch (NumberFormatException e) {
+                // Ignore
+            }
+
+            return criteriaBuilder.or(predicates.toArray(new Predicate[]{}));
+
+            /*List<Predicate> predicates = new ArrayList<>();
 
             if (request.getMenu() != null) {
                 Predicate menuPredicate = criteriaBuilder.like(
@@ -43,7 +65,7 @@ public class MenuSpecification {
                 predicates.add(maxPricePredicate);
             }
 
-            return query.where(predicates.toArray(Predicate[]::new)).getRestriction();
+            return query.where(predicates.toArray(Predicate[]::new)).getRestriction();*/
         };
     }
 }

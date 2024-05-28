@@ -1,8 +1,10 @@
 package com.enigma.wmb_api.service.impl;
 
+import com.enigma.wmb_api.constant.APIUrl;
 import com.enigma.wmb_api.dto.request.GetMenuRequest;
 import com.enigma.wmb_api.dto.request.MenuRequest;
 import com.enigma.wmb_api.dto.response.MenuResponse;
+import com.enigma.wmb_api.dto.response.ImageResponse;
 import com.enigma.wmb_api.entity.MImage;
 import com.enigma.wmb_api.entity.MMenu;
 import com.enigma.wmb_api.repository.MenuRepository;
@@ -49,7 +51,10 @@ public class MenuServiceImpl implements MenuService {
                 .id(menu.getId())
                 .menu(menu.getMenu())
                 .price(menu.getPrice())
-                .image(image)
+                .image(ImageResponse.builder()
+                        .url(APIUrl.MENU_IMAGE_API_PATH + "/" + menu.getImage().getId())
+                        .name(menu.getImage().getName())
+                        .build())
                 .build();
     }
 
@@ -64,7 +69,7 @@ public class MenuServiceImpl implements MenuService {
         Sort sort = Sort.by(Sort.Direction.fromString(request.getDirection()), request.getSortBy());
 
         Pageable pageable = PageRequest.of((request.getPage() - 1), request.getSize(), sort);
-        Specification<MMenu> specification = MenuSpecification.getSpecification(request);
+        Specification<MMenu> specification = MenuSpecification.getSpecification(request.getQuery());
 
         Page<MMenu> menuPage = menuRepository.findAll(specification, pageable);
 
@@ -74,7 +79,10 @@ public class MenuServiceImpl implements MenuService {
                 .id(menu.getId())
                 .menu(menu.getMenu())
                 .price(menu.getPrice())
-                .image(menu.getImage())
+                .image(ImageResponse.builder()
+                        .url(APIUrl.MENU_IMAGE_API_PATH + "/" + menu.getImage().getId())
+                        .name(menu.getImage().getName())
+                        .build())
                 .build());
     }
 
@@ -93,7 +101,10 @@ public class MenuServiceImpl implements MenuService {
                 .id(menu.getId())
                 .menu(menu.getMenu())
                 .price(menu.getPrice())
-                .image(menu.getImage())
+                .image(ImageResponse.builder()
+                        .url(APIUrl.MENU_IMAGE_API_PATH + "/" + menu.getImage().getId())
+                        .name(menu.getImage().getName())
+                        .build())
                 .build();
     }
 
@@ -119,7 +130,10 @@ public class MenuServiceImpl implements MenuService {
                 .id(currMenu.getId())
                 .menu(currMenu.getMenu())
                 .price(currMenu.getPrice())
-                .image(currMenu.getImage())
+                .image(ImageResponse.builder()
+                        .url(APIUrl.MENU_IMAGE_API_PATH + "/" + currMenu.getImage().getId())
+                        .name(currMenu.getImage().getName())
+                        .build())
                 .build();
     }
 
@@ -133,7 +147,10 @@ public class MenuServiceImpl implements MenuService {
                 .id(menu.getId())
                 .menu(menu.getMenu())
                 .price(menu.getPrice())
-                .image(menu.getImage())
+                .image(ImageResponse.builder()
+                        .url(APIUrl.MENU_IMAGE_API_PATH + "/" + menu.getImage().getId())
+                        .name(menu.getImage().getName())
+                        .build())
                 .build();
     }
 
